@@ -10,7 +10,7 @@ public class application {
         HashSet<Pratos> massa = new HashSet<>();
         massa.add(new Pratos("lasanha"));
         massa.add(new Pratos("coxinha"));
-        HashSet<Pratos> peixe = new HashSet<>();
+
         todos.put(new TiposPratos("massa"), massa);
         String nome;
         String nome2;
@@ -18,8 +18,10 @@ public class application {
         int opcao2;
 
 
+
         while (true) {
             boolean acerto = false;
+            boolean reprise = false;
             JOptionPane.showMessageDialog(null, "Pense em um prato que gosta");
             for (TiposPratos list : todos.keySet()) {
                 opcao = JOptionPane.showOptionDialog(null, "O tipo de prato  que você pensou é " + list + " ?", "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
@@ -35,12 +37,13 @@ public class application {
                                 JOptionPane.showMessageDialog(null, "Seu Prato é " + pratos);
                                 achou = true;
                                 acerto = true;
+                                reprise = true;
                                 break;
                             }
                             case JOptionPane.NO_OPTION: {
                                 break;
                             }
-                            case JOptionPane.CANCEL_OPTION: {
+                            default: {
                                 System.exit(0);
                             }
                         }
@@ -49,7 +52,9 @@ public class application {
                         }
                     }
                 }
-
+                if (reprise) {
+                    break;
+                }
             }
             if (!acerto) {
                 nome = JOptionPane.showInputDialog(null, "Qual prato você pensou? ");
