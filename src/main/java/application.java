@@ -53,6 +53,9 @@ public class application {
                 if (reprise) {
                     break;
                 }
+                if(opcao == JOptionPane.CLOSED_OPTION){
+                    System.exit(0);
+                }
             }
             if (!acerto) {
              String   nome = JOptionPane.showInputDialog(null, "Qual prato você pensou? ");
@@ -64,17 +67,19 @@ public class application {
     }
 
     public static void addNovoPrato(String nome, String nome2) {
-        todos.computeIfPresent(nome2, (key, value) -> {
-            value.add(nome);
-            return value;
-        });
-        todos.computeIfAbsent(nome2, key -> {
-            HashSet<String> conjunto = new HashSet<>();
-            conjunto.add(nome);
-            return conjunto;
-        });
-    }
+        if (!(nome == null || nome2 == null)) {
+            todos.computeIfPresent(nome2, (key, value) -> {
+                value.add(nome);
+                return value;
+            });
+            todos.computeIfAbsent(nome2, key -> {
+                HashSet<String> conjunto = new HashSet<>();
+                conjunto.add(nome);
+                return conjunto;
 
+            });
+        }
+    }
 
 }
 
