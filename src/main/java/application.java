@@ -3,15 +3,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class application {
-    static HashMap<TiposPratos, HashSet<Pratos>> todos = new HashMap<>();
+    static HashMap<String, HashSet<String>> todos = new HashMap<>();
     public static void main(String[] args) {
 
         Object[] options = {"Sim", "Não"};
-        HashSet<Pratos> massa = new HashSet<>();
-        massa.add(new Pratos("lasanha"));
-        massa.add(new Pratos("coxinha"));
 
-        todos.put(new TiposPratos("massa"), massa);
+        HashSet<String> massa = new HashSet<>();
+        massa.add("lasanha");
+        massa.add("coxinha");
+
+        todos.put("massa", massa);
+
         String nome;
         String nome2;
         int opcao;
@@ -23,14 +25,14 @@ public class application {
             boolean acerto = false;
             boolean reprise = false;
             JOptionPane.showMessageDialog(null, "Pense em um prato que gosta");
-            for (TiposPratos list : todos.keySet()) {
+            for (String list : todos.keySet()) {
                 opcao = JOptionPane.showOptionDialog(null, "O tipo de prato  que você pensou é " + list + " ?", "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
                 if (opcao == JOptionPane.YES_OPTION) {
 
-                    HashSet<Pratos> conjunto = todos.get(list);
+                    HashSet<String> conjunto = todos.get(list);
 
                     boolean achou = false;
-                    for (Pratos pratos : conjunto) {
+                    for (String pratos : conjunto) {
                         opcao2 = JOptionPane.showOptionDialog(null, "O Prato que você pensou é " + pratos, "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
                         switch (opcao2) {
                             case JOptionPane.YES_OPTION: {
@@ -50,6 +52,7 @@ public class application {
                         if (achou) {
                             break;
                         }
+                        reprise = true;
                     }
                 }
                 if (reprise) {
@@ -57,28 +60,33 @@ public class application {
                 }
             }
             if (!acerto) {
-                nome = JOptionPane.showInputDialog(null, "Qual prato você pensou? ");
-                nome2 = JOptionPane.showInputDialog(null, nome + " é _____ mas não é bolo de chocolate");
+                nome = JOptionPane.showInputDialog(null, "Qual prato você pensou? "); // abacaxi
+                nome2 = JOptionPane.showInputDialog(null,   "de qual familia " + nome + " pertence"); //fruta
                 addNovoPrato(nome, nome2);
             }
             }
 
         }
-        public static void addNovoPrato (String nome, String nome2){
-            if (todos.containsKey(nome2)) {
-                HashSet<Pratos> conjunto = todos.get(nome2);
-                todos.remove(nome2);
-                conjunto.add(new Pratos(nome));
-                todos.put(new TiposPratos(nome2), conjunto);
-            } else {
-                HashSet<Pratos> novoConjunto = new HashSet<>();
-                novoConjunto.add(new Pratos(nome));
-                todos.put(new TiposPratos(nome2), novoConjunto);
-            }
+    public static void addNovoPrato(String nome, String nome2) {
+
+        HashSet<String> conjunto = new HashSet<>();
+        conjunto.add(nome);
+
+        if (todos.containsKey(nome2)){
+            HashSet<String> pivot = todos.get(nome2);
+            pivot.add(nome);
+            todos.remove(nome2);
+            todos.put(nome2,pivot);
+        }
+        else {
+            todos.put(nome2, conjunto);
+        }
+
+    }
 
 
         }
-    }
+
 
 
 
